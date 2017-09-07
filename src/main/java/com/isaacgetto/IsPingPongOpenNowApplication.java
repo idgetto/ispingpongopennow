@@ -3,6 +3,7 @@ package com.isaacgetto;
 import com.isaacgetto.db.PingDao;
 import com.isaacgetto.resources.PingResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.PooledDataSourceFactory;
@@ -36,6 +37,8 @@ public class IsPingPongOpenNowApplication extends Application<IsPingPongOpenNowC
         return isPingPongOpenNowConfiguration.getDataSourceFactory();
       }
     });
+
+    bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
   }
 
   @Override

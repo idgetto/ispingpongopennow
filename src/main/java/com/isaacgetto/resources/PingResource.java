@@ -24,6 +24,12 @@ public class PingResource {
     return pingDao.getAll();
   }
 
+  @GET
+  @Path("/recent")
+  public boolean anyRecent() {
+    return pingDao.anyRecent();
+  }
+
   @POST
   public Ping ping(@NotNull Ping ping) {
     long id = pingDao.insert(ping);
