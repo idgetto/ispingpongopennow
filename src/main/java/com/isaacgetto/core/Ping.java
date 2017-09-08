@@ -1,6 +1,10 @@
 package com.isaacgetto.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class Ping {
   private long id;
@@ -23,5 +27,12 @@ public class Ping {
   @JsonProperty
   public long getTime() {
     return time;
+  }
+
+  @JsonProperty
+  public String getDate() {
+    ZoneId zoneId = ZoneId.of("America/New_York");
+    LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), zoneId);
+    return dateTime.format(DateTimeFormatter.ofPattern("MM/dd/yy h:mm:s a"));
   }
 }

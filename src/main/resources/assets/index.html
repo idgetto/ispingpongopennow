@@ -1,27 +1,92 @@
 <html>
   <head>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Is Ping Pong Open Now</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet"
+          type="text/css">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/custom.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script>
-      $(document).ready(function() {
+      $(document).ready(function () {
         $.get(getUrl(), function (data, status) {
           if (status === "success") {
-            var available = !data;
-            console.log(available);
+            var available = data ? "🙅🏓🙅‍️" : "🏓🏃🏓";
             $("#available").append("<h2>" + available + "</h2>");
-            console.log(available);
           }
-        })
+        });
+
+        $.get(getAllPingsUrl(), function (data, status) {
+          if (status === "success") {
+            console.log(data);
+            addTable(data);
+          }
+        });
       });
+
+      function addTable(pings) {
+        var table = $("#pings");
+        pings.forEach(function (ping) {
+          table.append(`<tr><td>${ping['date']}</td><td>${getNextSound()}</td></tr>`)
+        });
+      }
+
+      var soundIndex = 0;
+      var sounds = ["ping", "pong"];
+
+      function getNextSound() {
+        var sound = sounds[soundIndex];
+        soundIndex = soundIndex === 0 ? 1 : 0;
+        return sound;
+      }
 
       function getUrl() {
         return $(location).attr("protocol") + "//" + $(location).attr("host") + "/api/ping/recent";
       }
+
+      function getAllPingsUrl() {
+        return $(location).attr("protocol") + "//" + $(location).attr("host") + "/api/ping";
+      }
     </script>
   </head>
   <body>
-    <h1>Index</h1>
-    <div id="available">
+    <div class="container">
+      <div class="row">
+        <div class="twelve columns">
+          <div class="hero">
+            <h1>Is Ping Pong Open Now</h1>
+            <div id="available">
+            </div>
+            <table class="u-full-width" style="margin-top: 6em">
+              <thead>
+                <tr>
+                  <td>Date</td>
+                  <td>♪</td>
+                </tr>
+              </thead>
+              <tbody id="pings">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

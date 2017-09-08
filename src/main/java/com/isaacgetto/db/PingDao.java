@@ -13,6 +13,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 @RegisterMapper(PingMapper.class)
 public interface PingDao {
+  long DEFAULT_THRESHOLD_SECONDS = 30L;
 
   @SqlQuery("SELECT * FROM pings ORDER BY time DESC")
   List<Ping> getAll();
@@ -21,8 +22,20 @@ public interface PingDao {
   List<Ping> getAfter(@Bind("time") long time);
 
   default List<Ping> getRecent() {
-    long fiveMinutesAgo = Instant.now().minus(5, ChronoUnit.MINUTES).toEpochMilli();
-    return getAfter(fiveMinutesAgo);
+    String thresholdSeconds = System.getenv("THRESHOLD_SECONDS");
+
+    long numSeconds = DEFAULT_THRESHOLD_SECONDS;
+    if (thresholdSeconds != null) {
+      try {
+        numSeconds = Long.parseLong(thresholdSeconds);
+      } catch (NumberFormatException e) {
+        System.out.printf("Couldn't parse %s as a long\n", thresholdSeconds);
+        System.out.printf("Falling back to default threshold of %d seconds", DEFAULT_THRESHOLD_SECONDS);
+      }
+    }
+
+    long earlier = Instant.now().minus(numSeconds, ChronoUnit.SECONDS).toEpochMilli();
+    return getAfter(earlier);
   }
 
   default boolean anyRecent() {

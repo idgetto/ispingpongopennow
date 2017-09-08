@@ -1,0 +1,23 @@
+.hero {
+  margin-top: 20%;
+  text-align: center;
+}
+
+.container {
+
+}
+
+.jumbo {
+  font-size: 6em;
+}
+
+a.sly {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+.grape {
+  margin-top: 15px;
+  text-align: center;
+  margin-bottom: 15px;
+}
