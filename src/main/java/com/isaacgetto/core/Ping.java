@@ -33,6 +33,6 @@ public class Ping {
   public String getDate() {
     ZoneId zoneId = ZoneId.of("America/New_York");
     LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), zoneId);
-    return dateTime.format(DateTimeFormatter.ofPattern("MM/dd/yy h:mm:s a"));
+    return dateTime.format(DateTimeFormatter.ofPattern("MM/dd/yy h:mm:ss a"));
   }
 }
